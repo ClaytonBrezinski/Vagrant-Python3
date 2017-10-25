@@ -2,21 +2,24 @@
 This repo is inteded as a base for building python3 projects. It comes as a Vagrant virtual machine running on top of VirtualBox with a shared folder shared between the two machines.
 
 OS is Ubuntu 16.04
+
+
+
 Ports opened for use:
-	- guest: 80, host: 8080, host_ip: "127.0.0.1"
-	- guest: 8000, host: 8000, host_ip: "127.0.0.1"
+- guest: 80, host: 8080, host_ip: "127.0.0.1"
+- guest: 8000, host: 8000, host_ip: "127.0.0.1"
 	
 ### Requirements
 
-- [Vagrant](http://www.vagrantup.com/) version 1.6.0 or greater (for docker provisions)
+- [Vagrant](http://www.vagrantup.com/) version 1.6.0 or greater
 - [Virtualbox](https://www.virtualbox.org)
 
 ### Dependencies installed: 
-- VirtualEnv
 - Python3
 - Pip3
+- VirtualEnv  *Note: VirtualEnv directory created at root*
 
-VirtualEnv file is created at root
+
 
 ### Usage
 
