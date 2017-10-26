@@ -1,5 +1,14 @@
-Vagrant.require_plugin "vagrant-reload"
-Vagrant.require_plugin "vagrant-vbguest"
+[
+  { :name => "vagrant-reload", :version => ">= 0" },
+  { :name => "vagrant-vbguest", :version => ">= 0.15.0" }
+].each do |plugin|
+
+  if not Vagrant.has_plugin?(plugin[:name], plugin[:version])
+    raise "#{plugin[:name]} #{plugin[:version]} is required. Please run `vagrant plugin install #{plugin[:name]}`"
+  end
+end
+
+
 Vagrant.configure("2") do |config|
 
 	config.vm.box = "v0rtex/xenial64"
@@ -17,9 +26,10 @@ Vagrant.configure("2") do |config|
 	# Create defualt installation for Ubuntu machine
 	config.vm.provision "shell", run: "once", inline: <<-SHELL	
 		echo "[vagrant provisioning] Installing Python3 specific dependencies"
-		apt-get -q install -y python3-pip
-		
-		pip3 install virtualEnv
+		sudo apt-get -q install -y python3-pip
+		yes | pip3 install --upgrade pip
+
+		yes | pip3 install virtualEnv
 		mkdir ~/.virtualenvs
 			
 		echo "making python3 and pip3 the default"
@@ -28,7 +38,14 @@ Vagrant.configure("2") do |config|
 		sudo ln -s /usr/bin/pip3 /usr/bin/pip
 		
 		echo "updating Ubuntu"
-		sudo apt-get -q update
-		sudo apt-get -q upgrade
+		sudo apt-get -q -y update
+		sudo apt-get -q -y upgrade
+
+		sudo rm /boot/grub/menu.lst
+        sudo update-grub-legacy-ec2 -y
+        sudo dpkg --configure -a
+        sudo apt-get dist-upgrade -y
+        sudo reboot
+
 	SHELL
 end
